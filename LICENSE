@@ -1,41 +1,63 @@
 Compact Raid Frames — stock 3.3.5a backport
 ============================================
 
-ORIGIN & ATTRIBUTION
---------------------
-The "Compact Raid Frame" / CompactRaidFrame raid UI system is the work of
-Blizzard Entertainment. It was packaged and adapted into a 3.3.5a addon by
-Tsoukie:
+This repository combines material under different terms. Please read all
+three sections.
 
-    https://gitlab.com/Tsoukie/compactraidframe-3.3.5
+1. BACKPORT CONTRIBUTIONS BY JEDBORG — MIT License (full text below)
+   The files original to this backport are licensed MIT: WotLKCompat.lua,
+   Templates.xml, CRFEventRelay.lua, CRFHealAbsorb.lua, CHANGELOG.md, README.md,
+   and the modifications/fixes made to adapt the addon to stock 3.3.5a.
 
-The upstream Tsoukie project carries NO explicit software license on its
-GitLab repository. Accordingly, this backport adds no license of its own and
-makes no additional grant of rights: all rights to the original code and
-artwork remain with their respective authors (Blizzard Entertainment and
-Tsoukie). The same terms (or absence thereof) as the upstream project apply.
+2. ORIGINAL ADDON & BLIZZARD CODE — no explicit license
+   The "Compact Raid Frame" raid UI system is the work of Blizzard
+   Entertainment; it was packaged into a 3.3.5a addon by Tsoukie
+   (https://gitlab.com/Tsoukie/compactraidframe-3.3.5). The upstream project
+   carries NO explicit license, so no additional grant is made over that code
+   or its artwork — all rights remain with their respective authors. The same
+   terms (or absence thereof) as upstream apply to those parts.
 
-THIS VERSION IS INDEPENDENT
----------------------------
-This repository is an INDEPENDENT backport to stock World of Warcraft 3.3.5a,
-maintained by Jedborg. It is NOT affiliated with, endorsed by, sponsored by,
-or otherwise connected to Tsoukie or the upstream project in any way. The
-original came from Tsoukie's project; this version is a separate effort and
-should not be attributed to, or confused with, his.
+3. BUNDLED LIBRARIES (Libs/) — their own respective licenses
+   LibHealComm-4.0, AbsorbsMonitor-1.0, LibGroupTalents-1.0, LibTalentQuery-1.0,
+   LibResComm-1.0, Ace3 (AceComm/AceEvent/AceTimer/AceSerializer),
+   CallbackHandler-1.0, ChatThrottleLib and LibStub remain under their own
+   licenses, held by their respective authors.
 
-It is provided AS-IS, without warranty of any kind, express or implied, for
-use on private 3.3.5a (Wrath of the Lich King) servers.
 
-BUNDLED LIBRARIES
------------------
-The bundled libraries under Libs/ — LibHealComm-4.0, AbsorbsMonitor-1.0,
-LibGroupTalents-1.0, LibTalentQuery-1.0, LibResComm-1.0, Ace3 (AceComm,
-AceEvent, AceTimer, AceSerializer), CallbackHandler-1.0, ChatThrottleLib and
-LibStub — remain under their own respective licenses, held by their
-respective authors.
+ORIGIN & NON-AFFILIATION
+------------------------
+The original came from Tsoukie's project, but THIS VERSION IS AN INDEPENDENT
+backport maintained by Jedborg. It is NOT affiliated with, endorsed by,
+sponsored by, or otherwise connected to Tsoukie or the upstream project, and
+should not be attributed to or confused with his. Provided AS-IS, without
+warranty of any kind, for use on private 3.3.5a (Wrath of the Lich King)
+servers.
 
-TRADEMARKS
-----------
 World of Warcraft and Blizzard Entertainment are trademarks or registered
 trademarks of Blizzard Entertainment, Inc. This is an unofficial, non-commercial
 fan project and is not affiliated with or endorsed by Blizzard Entertainment.
+
+
+================================================================================
+MIT License — applies to the backport contributions described in section 1 above
+================================================================================
+
+Copyright (c) 2026 Jedborg
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

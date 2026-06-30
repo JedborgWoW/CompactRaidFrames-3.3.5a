@@ -73,10 +73,12 @@ See [CHANGELOG.md](CHANGELOG.md) for the full list.
 
 ## License & affiliation
 
-The upstream project by Tsoukie carries **no explicit license**, so this backport
-adds none either — all rights to the original code and artwork remain with their
-respective authors (Blizzard Entertainment and Tsoukie). Provided **as-is**. See
-[LICENSE](LICENSE).
+The **backport contributions** original to this project (`WotLKCompat.lua`,
+`Templates.xml`, `CRFEventRelay.lua`, `CRFHealAbsorb.lua`, and the 3.3.5a fixes)
+are licensed **MIT**. The original Blizzard/Tsoukie code carries **no explicit
+license** (upstream has none) and the bundled libraries keep their own licenses —
+all rights to those parts remain with their respective authors. Provided
+**as-is**. See [LICENSE](LICENSE).
 
 > The original came from **Tsoukie's** project, but **this version is an
 > independent backport and is not affiliated with, endorsed by, or otherwise
