@@ -1,0 +1,28 @@
+## Interface: 30300
+## Title: Compact Raid Frames
+## Author: Blizzard, Tsoukie (backport: Jedborg)
+## Notes: Classic Raid Frames - stock 3.3.5a (no ClassicAPI dependency)
+## Version: 1.13
+## SavedVariablesPerCharacter: CompactRaidFrameDB
+
+WotLKCompat.lua
+
+Libs\Load.xml
+Locales\Load.xml
+
+Compat.lua
+Templates.xml
+CUFProfiles\CompactUnitFrameProfiles.xml
+
+FlowContainer.lua
+CompactUnitFrame.xml
+CompactRaidGroup.xml
+CompactPartyFrame.xml
+
+CompactRaidFrames\CompactRaidFrameReservationManager.lua
+CompactRaidFrames\CompactRaidFrameContainer.xml
+CompactRaidFrames\CompactRaidFrameManager.xml
+
+CRFEventRelay.lua
+CRFHealAbsorb.lua
+CRFDebug.lua

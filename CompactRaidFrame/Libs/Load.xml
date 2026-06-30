@@ -1,0 +1,21 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/
+..\FrameXML\UI.xsd">
+
+  <Script file="LibStub\LibStub.lua" />
+  <Include file="CallbackHandler-1.0\Callbackhandler-1.0.xml" />
+
+  <Include file="LibResComm-1.0\LibResComm-1.0.xml" />
+  <Include file="LibTalentQuery-1.0\LibTalentQuery-1.0.xml" />
+  <Include file="LibGroupTalents-1.0\LibGroupTalents-1.0.xml" />
+
+  <Include file="LibHealComm-4.0\LibHealComm-4.0.xml" />
+
+  <!-- AbsorbsMonitor-1.0 embeds these Ace libs (cross-client shield sync). -->
+  <Include file="AceEvent-3.0\AceEvent-3.0.xml" />
+  <Include file="AceSerializer-3.0\AceSerializer-3.0.xml" />
+  <Include file="AceTimer-3.0\AceTimer-3.0.xml" />
+  <Include file="AceComm-3.0\AceComm-3.0.xml" />
+  <Include file="AbsorbsMonitor-1.0\AbsorbsMonitor-1.0.xml" />
+
+</Ui>
