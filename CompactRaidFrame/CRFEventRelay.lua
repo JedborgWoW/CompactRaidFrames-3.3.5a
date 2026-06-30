@@ -57,5 +57,5 @@ relay:SetScript("OnEvent", function()
     RelayGroupRosterUpdate()
 end)
 
--- Expose for /crfforce and /crfdebug.
+-- Exposed so other modules can force a roster refresh if needed.
 CRF_RelayGroupRosterUpdate = RelayGroupRosterUpdate

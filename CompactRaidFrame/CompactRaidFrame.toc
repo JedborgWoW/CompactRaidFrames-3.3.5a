@@ -25,4 +25,3 @@ CompactRaidFrames\CompactRaidFrameManager.xml
 
 CRFEventRelay.lua
 CRFHealAbsorb.lua
-CRFDebug.lua
