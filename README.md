@@ -66,7 +66,19 @@ See [CHANGELOG.md](CHANGELOG.md) for the full list.
 ## Credits
 
 - Original raid-frame system: **Blizzard Entertainment**
-- Addon / packaging: **Tsoukie** — <https://gitlab.com/Tsoukie/compactraidframe-3.3.5>
+- Original 3.3.5a addon / packaging: **Tsoukie** — <https://gitlab.com/Tsoukie/compactraidframe-3.3.5>
 - Bundled libraries: LibHealComm-4.0, AbsorbsMonitor-1.0, LibGroupTalents-1.0,
   LibResComm-1.0, Ace3, LibStub (their respective authors).
 - Stock-3.3.5a (no-ClassicAPI) backport: **Jedborg**
+
+## License & affiliation
+
+The upstream project by Tsoukie carries **no explicit license**, so this backport
+adds none either — all rights to the original code and artwork remain with their
+respective authors (Blizzard Entertainment and Tsoukie). Provided **as-is**. See
+[LICENSE](LICENSE).
+
+> The original came from **Tsoukie's** project, but **this version is an
+> independent backport and is not affiliated with, endorsed by, or otherwise
+> connected to Tsoukie or his project.** An unofficial, non-commercial fan project,
+> not affiliated with Blizzard Entertainment.

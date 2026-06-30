@@ -1,0 +1,41 @@
+Compact Raid Frames — stock 3.3.5a backport
+============================================
+
+ORIGIN & ATTRIBUTION
+--------------------
+The "Compact Raid Frame" / CompactRaidFrame raid UI system is the work of
+Blizzard Entertainment. It was packaged and adapted into a 3.3.5a addon by
+Tsoukie:
+
+    https://gitlab.com/Tsoukie/compactraidframe-3.3.5
+
+The upstream Tsoukie project carries NO explicit software license on its
+GitLab repository. Accordingly, this backport adds no license of its own and
+makes no additional grant of rights: all rights to the original code and
+artwork remain with their respective authors (Blizzard Entertainment and
+Tsoukie). The same terms (or absence thereof) as the upstream project apply.
+
+THIS VERSION IS INDEPENDENT
+---------------------------
+This repository is an INDEPENDENT backport to stock World of Warcraft 3.3.5a,
+maintained by Jedborg. It is NOT affiliated with, endorsed by, sponsored by,
+or otherwise connected to Tsoukie or the upstream project in any way. The
+original came from Tsoukie's project; this version is a separate effort and
+should not be attributed to, or confused with, his.
+
+It is provided AS-IS, without warranty of any kind, express or implied, for
+use on private 3.3.5a (Wrath of the Lich King) servers.
+
+BUNDLED LIBRARIES
+-----------------
+The bundled libraries under Libs/ — LibHealComm-4.0, AbsorbsMonitor-1.0,
+LibGroupTalents-1.0, LibTalentQuery-1.0, LibResComm-1.0, Ace3 (AceComm,
+AceEvent, AceTimer, AceSerializer), CallbackHandler-1.0, ChatThrottleLib and
+LibStub — remain under their own respective licenses, held by their
+respective authors.
+
+TRADEMARKS
+----------
+World of Warcraft and Blizzard Entertainment are trademarks or registered
+trademarks of Blizzard Entertainment, Inc. This is an unofficial, non-commercial
+fan project and is not affiliated with or endorsed by Blizzard Entertainment.
