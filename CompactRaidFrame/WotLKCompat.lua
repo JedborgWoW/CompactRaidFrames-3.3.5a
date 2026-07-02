@@ -496,11 +496,17 @@ end
 -- 14. SOUNDKIT (checkbox click sound). PlaySoundFile needs a file path on
 --     3.3.5a; we bundle the sound under Media\Sounds.
 --========================================================================--
+-- Our call sites use PlaySoundFile(SOUNDKIT.X), so the entries must be file
+-- PATHS. If another addon's shim already defined them as retail NUMERIC sound
+-- ids they are useless with PlaySoundFile on 3.3.5a -> replace those too
+-- (hence type ~= "string" rather than a plain nil guard).
 SOUNDKIT = SOUNDKIT or {}
-SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON = SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
-    or "Interface\\AddOns\\CompactRaidFrame\\Media\\Sounds\\SOUNDKIT\\856.ogg"
-SOUNDKIT.IG_MAINMENU_OPTION = SOUNDKIT.IG_MAINMENU_OPTION
-    or "Interface\\AddOns\\CompactRaidFrame\\Media\\Sounds\\SOUNDKIT\\852.ogg"
+if type(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON) ~= "string" then
+    SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON = "Interface\\AddOns\\CompactRaidFrame\\Media\\Sounds\\SOUNDKIT\\856.ogg"
+end
+if type(SOUNDKIT.IG_MAINMENU_OPTION) ~= "string" then
+    SOUNDKIT.IG_MAINMENU_OPTION = "Interface\\AddOns\\CompactRaidFrame\\Media\\Sounds\\SOUNDKIT\\852.ogg"
+end
 
 --========================================================================--
 -- 15. Misc small helpers.

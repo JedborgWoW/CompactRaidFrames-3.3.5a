@@ -2,6 +2,51 @@
 
 All notable changes to this **stock 3.3.5a backport** of Compact Raid Frames.
 
+## [1.13] — 2026-07-02
+
+Full audit pass against stock 3.3.5a (and awesome_wotlk): every registered
+event, API call, XML template and locale string cross-checked. Three gaps
+found and fixed.
+
+### Fixed
+- **Incoming-resurrection icon never appeared/cleared** while someone was
+  casting a res: `INCOMING_RESURRECT_CHANGED` is a Cata-era event that never
+  fires on 3.3.5a. `CRFEventRelay.lua` now listens to the bundled
+  LibResComm-1.0 callbacks (`ResStart`/`ResEnd`/`Ressed`/`ResExpired`) and
+  refreshes the center status icon on all frames.
+- **Role icons, manager role counts and "Sort By: Role" stayed stale** until
+  the next roster change: LibGroupTalents learns roles asynchronously (talent
+  inspection) and LFG assignment fires `PLAYER_ROLES_ASSIGNED`, but nothing
+  refreshed the role displays. `CRFEventRelay.lua` now refreshes them
+  (coalesced, one pass per 2 s; combat-deferred re-layout) on
+  `LibGroupTalents_Update`/`_RoleChange` and `PLAYER_ROLES_ASSIGNED`.
+- **Roster relay missed group-mode and party member frames:** the per-frame
+  `GROUP_ROSTER_UPDATE` relay only covered `CompactRaidFrameN`; it now also
+  covers `CompactRaidGroupNMemberM` ("Keep Groups Together") and
+  `CompactPartyFrameMemberM` (compact party) via the new
+  `CRF_ForEachCompactUnitFrame` iterator.
+- **Manager visibility state driver was dead on stock:** `[@raid1,exists]`
+  uses the `@` alias that only exists in 4.0+ (an unknown condition evaluates
+  false, so the driver was a constant "hide" and only the event backstop kept
+  the panel visible). Switched to the native `[target=raid1,exists]` form so
+  the secure driver now shows/hides the manager properly, including in combat.
+- **`SOUNDKIT` hardening:** entries are forced to bundled file paths if a
+  foreign shim already defined them as retail numeric sound ids (which
+  `PlaySoundFile` cannot play on 3.3.5a).
+
+### Verified (no change needed)
+- All registered events exist on stock 3.3.5a or are relayed/fired
+  synthetically; the remaining Cata-only registrations
+  (`UNIT_POWER_BAR_SHOW/HIDE`, `UNIT_HEAL_ABSORB_AMOUNT_CHANGED`) are harmless
+  no-ops there and on awesome_wotlk.
+- `UnitBuff`/`UnitDebuff` return-value positions, the `UnitPopup` "Set Focus"
+  hider (`UIDROPDOWNMENU_INIT_MENU` is a frame and `UnitPopupShown` is nested
+  per-level on 3.3.5a — checked against the 3.3.5 FrameXML source), secure
+  templates, all `inherits=` targets, all texture paths and all locale
+  strings.
+- awesome_wotlk adds API/events on top of stock and removes nothing the addon
+  uses; all shims are guarded so a native implementation always wins.
+
 ## [1.13] — 2026-06-30
 
 First self-contained stock-3.3.5a release. Backported from Tsoukie's

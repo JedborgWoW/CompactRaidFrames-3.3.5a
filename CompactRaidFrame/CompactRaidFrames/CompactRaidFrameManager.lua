@@ -47,11 +47,13 @@ function CompactRaidFrameManager_OnLoad(self)
     self:RegisterEvent("PLAYER_REGEN_ENABLED");
     self:RegisterEvent("PLAYER_ROLES_ASSIGNED");
 
-    -- 3.3.5a: the retail "[group]" macro conditional does not exist. Use the
-    -- universally-supported @unit,exists form (in a raid raid1 exists; in a party
-    -- party1 exists; solo neither -> hide). CompactRaidFrameManager_UpdateShown
-    -- is the event-driven backstop.
-    RegisterStateDriver(self, "visibility", "[@raid1,exists][@party1,exists]show;hide");
+    -- 3.3.5a: the retail "[group]" macro conditional does not exist, and the
+    -- "@unit" alias is 4.0+ (an unknown condition evaluates false, which made
+    -- this driver a constant "hide"). Use the native target=unit,exists form
+    -- (in a raid raid1 exists; in a party party1 exists; solo neither -> hide),
+    -- so the secure driver works even in combat.
+    -- CompactRaidFrameManager_UpdateShown is the event-driven backstop.
+    RegisterStateDriver(self, "visibility", "[target=raid1,exists][target=party1,exists]show;hide");
 
     self.containerResizeFrame:SetMinResize(self.container:GetWidth(), MINIMUM_RAID_CONTAINER_HEIGHT + RESIZE_VERTICAL_OUTSETS * 2 + 1);
     self.dynamicContainerPosition = true;
