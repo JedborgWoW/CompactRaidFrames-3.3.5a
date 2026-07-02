@@ -3,6 +3,7 @@
 ## Author: Blizzard, Tsoukie (backport: Jedborg)
 ## Notes: Classic Raid Frames - stock 3.3.5a (no ClassicAPI dependency)
 ## Version: 1.13
+## SavedVariables: CompactRaidFrameAccountDB
 ## SavedVariablesPerCharacter: CompactRaidFrameDB
 
 WotLKCompat.lua

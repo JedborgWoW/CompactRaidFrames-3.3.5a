@@ -4,6 +4,16 @@ All notable changes to this **stock 3.3.5a backport** of Compact Raid Frames.
 
 ## [1.13] — 2026-07-02
 
+### Changed
+- **Profiles and settings are now account-wide.** The database moved from
+  per-character (`CompactRaidFrameDB`) to account-level
+  (`CompactRaidFrameAccountDB`, `## SavedVariables`), so every character —
+  including newly created ones — shares the same raid profiles, options and
+  active profile. The **first** character you log in after updating seeds the
+  account database with a copy of its existing profiles (log in with the
+  character whose profiles you want to keep first); the old per-character
+  data is left on disk as a backup but is no longer used.
+
 Full audit pass against stock 3.3.5a (and awesome_wotlk): every registered
 event, API call, XML template and locale string cross-checked. Three gaps
 found and fixed.

@@ -48,29 +48,35 @@ local ALL_OPTIONS = {
 local ProfileAPI = CreateFrame("Frame");
 ProfileAPI:SetScript("OnEvent", function(self, event, addon)
 	if ( addon == "CompactRaidFrame" ) then
-		local ID = "CompactRaidFrameDB";
-		local DB = _G[ID];
+		-- Account-wide storage: profiles and settings live in
+		-- CompactRaidFrameAccountDB (## SavedVariables) so they are shared by
+		-- every character. Older versions stored everything per character in
+		-- CompactRaidFrameDB; the FIRST login after this change seeds the
+		-- account DB with a copy of that character's data so existing profiles
+		-- carry over. The old per-character DB is kept on disk as a backup but
+		-- is never read or written again once the account DB exists.
+		local DB = _G["CompactRaidFrameAccountDB"];
+		if ( not DB ) then
+			local charDB = _G["CompactRaidFrameDB"];
+			DB = charDB and CopyTable(charDB) or {useCompactPartyFrames = "1"};
+			_G["CompactRaidFrameAccountDB"] = DB;
+		end
 
-		if ( DB ) then
-			-- Migration: an AceDB layout (the old standalone used AceDB-3.0) or
-			-- legacy per-profile spec keys.
-			if ( DB.profileKeys or DB.profile or DB.profiles ) then
-				wipe(DB);
-				-- The wipe drops the stock default; restore it so compact party
-				-- frames are on after migrating away from the AceDB layout.
-				DB.useCompactPartyFrames = "1";
-			else
-				local P1 = DB[1];
-				if ( P1 and (P1.autoActivateSpec1 or P1.autoActivateSpec2) ) then
-					for i=1,#DB do
-						DB[i].autoActivateSpec1 = nil;
-						DB[i].autoActivateSpec2 = nil;
-					end
+		-- Migration: an AceDB layout (the old standalone used AceDB-3.0) or
+		-- legacy per-profile spec keys.
+		if ( DB.profileKeys or DB.profile or DB.profiles ) then
+			wipe(DB);
+			-- The wipe drops the stock default; restore it so compact party
+			-- frames are on after migrating away from the AceDB layout.
+			DB.useCompactPartyFrames = "1";
+		else
+			local P1 = DB[1];
+			if ( P1 and (P1.autoActivateSpec1 or P1.autoActivateSpec2) ) then
+				for i=1,#DB do
+					DB[i].autoActivateSpec1 = nil;
+					DB[i].autoActivateSpec2 = nil;
 				end
 			end
-		else
-			DB = {useCompactPartyFrames = "1"};
-			_G[ID] = DB;
 		end
 
 		-- Guarantee the stock default exists no matter what state the saved DB
