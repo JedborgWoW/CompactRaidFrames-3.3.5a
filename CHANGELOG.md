@@ -9,6 +9,18 @@ event, API call, XML template and locale string cross-checked. Three gaps
 found and fixed.
 
 ### Fixed
+- **Long dark vertical streaks across the screen when buffs with a duration
+  were shown:** the aura buttons' Cooldown frame only had a retail-style
+  CENTER anchor with no size — on 3.3.5a an instance `<Anchors>` block
+  suppresses the template's inherited `setAllPoints`, and a Cooldown (model)
+  with degenerate geometry renders its swipe as huge dark streaks. The
+  Cooldown now has explicit `setAllPoints`, the dispel-debuff icon (the other
+  anchorless region; retail auto-anchors those, 3.3.5a doesn't) got the same,
+  and `CompactUnitFrame_UpdateCooldownFrame` now calls the native
+  `CooldownFrame_SetTimer` directly so foreign retail-shim definitions of
+  `CooldownFrame_Set` can't hijack the code path. Side effect (intended,
+  matches retail): buffs/debuffs with a duration now show the radial cooldown
+  swipe on their icons.
 - **Incoming-resurrection icon never appeared/cleared** while someone was
   casting a res: `INCOMING_RESURRECT_CHANGED` is a Cata-era event that never
   fires on 3.3.5a. `CRFEventRelay.lua` now listens to the bundled

@@ -477,10 +477,14 @@ end
 --     Cooldown:SetCooldown exists).
 --========================================================================--
 if type(CooldownFrame_Set) ~= "function" then
+    -- Mirrors the native 3.3.5a CooldownFrame_SetTimer exactly (SetCooldown +
+    -- Show / Hide). No SetDrawEdge probing: stock lacks it and a core that
+    -- does expose it (awesome_wotlk) may implement it differently — calling
+    -- it is gratuitous behavioral risk for zero visual gain.
     function CooldownFrame_Set(self, start, duration, enable, forceShowDrawEdge, modRate)
         if enable and enable ~= 0 and start and start > 0 and duration and duration > 0 then
-            if self.SetDrawEdge then self:SetDrawEdge(forceShowDrawEdge and true or false) end
             self:SetCooldown(start, duration)
+            self:Show()
         else
             self:Hide()
         end

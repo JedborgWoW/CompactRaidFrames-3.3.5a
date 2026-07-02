@@ -23,15 +23,12 @@
       </Layer>
     </Layers>
     <Frames>
-      <Cooldown name="$parentCooldown" parentKey="cooldown" hideCountdownNumbers="true" inherits="CooldownFrameTemplate" reverse="true" hidden="true">
-        <Anchors>
-          <Anchor point="CENTER">
-            <Offset>
-              <AbsDimension x="0" y="-1" />
-            </Offset>
-          </Anchor>
-        </Anchors>
-      </Cooldown>
+      <!-- 3.3.5a: explicit setAllPoints instead of the retail CENTER-only anchor.
+           On this client an instance <Anchors> block suppresses the template's
+           inherited setAllPoints, leaving the Cooldown with no size - and a
+           Cooldown (model) with degenerate geometry renders as huge dark
+           streaks across the screen when its swipe is active. -->
+      <Cooldown name="$parentCooldown" parentKey="cooldown" hideCountdownNumbers="true" inherits="CooldownFrameTemplate" reverse="true" setAllPoints="true" hidden="true" />
     </Frames>
   </Button>
   <Button name="CompactDebuffTemplate" inherits="CompactAuraTemplate" virtual="true">
@@ -90,7 +87,9 @@
   <Button name="CompactDispelDebuffTemplate" virtual="true">
     <Layers>
       <Layer level="ARTWORK">
-        <Texture name="$parentIcon" parentKey="icon">
+        <!-- 3.3.5a: retail auto-anchors an anchorless layer texture to its
+             parent; this client does not, leaving it with an undefined rect. -->
+        <Texture name="$parentIcon" parentKey="icon" setAllPoints="true">
           <TexCoords left="0.125" right="0.875" top="0.125" bottom="0.875" />
         </Texture>
       </Layer>

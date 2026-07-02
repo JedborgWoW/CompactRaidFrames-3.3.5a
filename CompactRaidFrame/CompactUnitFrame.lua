@@ -1220,9 +1220,16 @@ function CompactUnitFrame_UpdateCooldownFrame(frame, expirationTime, duration)
     local enabled = expirationTime and expirationTime ~= 0;
     if enabled then
         local startTime = expirationTime - duration;
-        CooldownFrame_Set(frame.cooldown, startTime, duration, true);
+        -- 3.3.5a: prefer the native CooldownFrame_SetTimer. The Cata-named
+        -- CooldownFrame_Set may be predefined by other addons' retail shims
+        -- with unknown semantics; the native helper is deterministic here.
+        if ( CooldownFrame_SetTimer ) then
+            CooldownFrame_SetTimer(frame.cooldown, startTime, duration, 1);
+        else
+            CooldownFrame_Set(frame.cooldown, startTime, duration, true);
+        end
     else
-        CooldownFrame_Clear(frame.cooldown);
+        frame.cooldown:Hide();
     end
 end
 
