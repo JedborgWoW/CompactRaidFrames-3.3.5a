@@ -19,6 +19,8 @@ and runs on a plain 3.3.5a client.
   **damage absorbs** (Power Word: Shield, etc.) via AbsorbsMonitor-1.0.
 - Savable **profiles** with per-content auto-activation, plus the **Raid Members**
   manager panel (group/role filters, raid markers, ready check, lock/hide).
+- **Account-wide profiles** — all profiles, settings and the active profile are
+  shared by every character on the account, including newly created ones.
 - Optional **raid-style party frames**.
 
 ![Raid Profiles options panel](images/options-panel.png)
@@ -58,6 +60,11 @@ See [CHANGELOG.md](CHANGELOG.md) for the full list.
 
 ## Notes & limitations
 
+- **Profiles are account-wide** (stored in `CompactRaidFrameAccountDB`). Upgrading
+  from an older version that saved per character? The **first** character you log
+  in seeds the account database with a copy of its existing profiles — so log in
+  first with the character whose profiles you want to keep. The old per-character
+  data is left on disk as a backup but is no longer used.
 - Heal prediction includes HoTs; LibHealComm-4.0 may show a HoT tick ~1 tick ahead of
   when it actually lands (an inherent 3.3.5a limitation).
 - The manager's group/role filter buttons only appear in an actual raid (a party has
