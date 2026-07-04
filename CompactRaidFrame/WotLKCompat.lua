@@ -452,11 +452,15 @@ do
         local mt = getmetatable(obj)
         local index = mt and mt.__index
         if type(index) == "table" then
+            -- rawset, not index.X = fn: the frame-type __index table carries a
+            -- __newindex guard that silently drops a plain assignment for a NEW
+            -- key, leaving the method nil. The `not index.X` read stays
+            -- chain-aware so a native always wins.
             if not index.SetSize then
-                index.SetSize = function(self, w, h) self:SetWidth(w); self:SetHeight(h) end
+                rawset(index, "SetSize", function(self, w, h) self:SetWidth(w); self:SetHeight(h) end)
             end
             if not index.GetSize then
-                index.GetSize = function(self) return self:GetWidth(), self:GetHeight() end
+                rawset(index, "GetSize", function(self) return self:GetWidth(), self:GetHeight() end)
             end
         end
     end

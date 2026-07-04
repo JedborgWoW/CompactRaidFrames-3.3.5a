@@ -2,6 +2,17 @@
 
 All notable changes to this **stock 3.3.5a backport** of Compact Raid Frames.
 
+## [1.13] — 2026-07-04
+
+### Fixed
+- **Widget-metatable shims (`SetSize`/`GetSize`) now install with `rawset`.** On
+  this client the Frame-type method table carries a `__newindex` guard that
+  silently swallows a plain `index.SetSize = fn` for a NEW key, so on a stock
+  3.3.5a client (no ClassicAPI/awesome_wotlk) the shim was dropped and `SetSize`
+  stayed nil — a latent crash at every `:SetSize` call site in LibUIDropDownMenu
+  and the config panels. `WotLKCompat.lua` now adds these via `rawset` (bypassing
+  the guard); the `not index.X` checks stay chain-aware so a native always wins.
+
 ## [1.13] — 2026-07-02
 
 ### Changed
