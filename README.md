@@ -53,8 +53,9 @@ Raid Profiles**, or the **ⓘ** button on the Raid Members panel.
 - **`GROUP_ROSTER_UPDATE` relay** ([`CRFEventRelay.lua`](CompactRaidFrame/CRFEventRelay.lua))
   — that event is MoP+, so roster changes are relayed from the real 3.3.5a events.
 - **Heal prediction + absorbs** ([`CRFHealAbsorb.lua`](CompactRaidFrame/CRFHealAbsorb.lua)).
-- Options panel reflowed to a **scrollable single column** to fit the smaller stock
-  Interface Options container.
+- Options panel keeps Blizzard's original **two-column Cata layout** (options on the
+  left, Auto-Activate column on the right, frame sliders below) — it fits the stock
+  3.3.5a Interface Options container as-is, no reflow needed.
 
 See [CHANGELOG.md](CHANGELOG.md) for the full list.
 

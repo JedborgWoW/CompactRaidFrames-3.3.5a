@@ -16,60 +16,7 @@ function CompactUnitFrameProfiles_OnLoad(self)
 	BlizzardOptionsPanel_OnLoad(self, CompactUnitFrameProfiles_SaveChanges, CompactUnitFrameProfiles_CancelCallback, CompactUnitFrameProfiles_DefaultCallback, CompactUnitFrameProfiles_UpdateCurrentPanel);
 	InterfaceOptions_AddCategory(self);
 
-	CompactUnitFrameProfiles_FitToContainer(self);
-
 	self:SetScript("OnEvent", CompactUnitFrameProfiles_OnEvent);
-end
-
--- 3.3.5a: the Interface Options panel container is much smaller than the retail
--- Settings canvas and does NOT scroll, so this Cata-era panel (left options
--- column + right Auto-Activate column + bottom sliders) overflows the window.
--- Instead of shrinking everything (unreadable), reflow to a single column and
--- wrap it in a vertical scroll frame so it stays full-size and scrolls.
-function CompactUnitFrameProfiles_FitToContainer(self)
-	if ( self.crfScrollLayoutDone ) then
-		return;
-	end
-	local content = CompactUnitFrameProfilesGeneralOptionsFrame;
-	if ( not content ) then
-		return;
-	end
-	self.crfScrollLayoutDone = true;
-	self:SetScale(1);
-
-	-- Pull the first option up to the top of the scroll area (the profile selector
-	-- / Save / Delete live in the fixed header above the scroll frame).
-	local keep = _G["CompactUnitFrameProfilesGeneralOptionsFrameKeepGroupsTogether"];
-	if ( keep ) then
-		keep:ClearAllPoints();
-		keep:SetPoint("TOPLEFT", content, "TOPLEFT", 13, -10);
-	end
-
-	-- Move the Auto-Activate block from the right column to BELOW the frame sliders
-	-- (single column). Its label + checkboxes are anchored to autoActivateBG, so
-	-- they all follow.
-	local autoBG = content.autoActivateBG;
-	if ( autoBG ) then
-		local heightSlider = _G["CompactUnitFrameProfilesGeneralOptionsFrameHeightSlider"];
-		autoBG:ClearAllPoints();
-		if ( heightSlider ) then
-			autoBG:SetPoint("TOPLEFT", heightSlider, "BOTTOMLEFT", -8, -34);
-		else
-			autoBG:SetPoint("TOPLEFT", content, "TOPLEFT", 13, -470);
-		end
-	end
-
-	-- Wrap the options frame in a vertical scroll frame.
-	local scroll = _G["CompactUnitFrameProfilesScrollFrame"];
-	if ( not scroll ) then
-		scroll = CreateFrame("ScrollFrame", "CompactUnitFrameProfilesScrollFrame", self, "UIPanelScrollFrameTemplate");
-		scroll:SetPoint("TOPLEFT", self, "TOPLEFT", 6, -96);
-		scroll:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -30, 8);
-	end
-	content:SetParent(scroll);
-	content:ClearAllPoints();
-	content:SetSize(330, 720);
-	scroll:SetScrollChild(content);
 end
 
 -- Slider track. ClassicAPI's HorizontalSliderTemplate drew this from
@@ -442,8 +389,6 @@ end
 
 function CompactUnitFrameProfilesGeneralOptionsFrame_OnShow(self)
 	self.autoActivateBG:SetHeight(293);
-	-- Re-fit when shown (the container is reliably sized by now).
-	CompactUnitFrameProfiles_FitToContainer(CompactUnitFrameProfiles);
 end
 
 function CompactUnitFrameProfile_UpdateAutoActivationDisabledLabel()

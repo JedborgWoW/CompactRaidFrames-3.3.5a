@@ -2,6 +2,18 @@
 
 All notable changes to this **stock 3.3.5a backport** of Compact Raid Frames.
 
+## [1.14] — 2026-07-05
+
+### Changed
+- **Options panel restored to Blizzard's original two-column Cata layout.** Earlier
+  releases reflowed the Raid Profiles panel into a single scrollable column out of
+  concern that the Cata-era panel overflowed the stock 3.3.5a Interface Options
+  container. It does not — the full layout (options column on the left, the
+  Auto-Activate column on the right, the Frame Height / Frame Width sliders below,
+  and the Reset Position button) fits the stock container as-is. Removed
+  `CompactUnitFrameProfiles_FitToContainer` and its scroll-frame wrapper so the
+  native XML layout renders unchanged, matching the stock Blizzard appearance.
+
 ## [1.13] — 2026-07-04
 
 ### Fixed
