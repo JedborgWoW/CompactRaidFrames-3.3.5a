@@ -1593,12 +1593,21 @@ local paladin_defaultScaling = {1.0};
 -- The base value is always 500
 local function paladin_SacredShield_Create(sourceGUID, sourceName, destGUID, destName, spellId, destEffects)
 	local _, sp, quality1, sourceScaling, quality2 = Unit_StatsAndScaling(sourceGUID, 0.1, paladin_defaultScaling, 0.2);
-	if not sourceScaling then sourceScaling = {1.0} end
+	-- Guard against a missing OR empty scaling table (e.g. a sub-80 paladin whose
+	-- Divine Guardian scaling was never populated, or an empty table received over
+	-- comm): sourceScaling[1] would be nil and crash the arithmetic below.
+	if not (sourceScaling and sourceScaling[1]) then sourceScaling = {1.0} end
 	return floor((500 + (sp * 0.75)) * sourceScaling[1] * ZONE_MODIFIER), math.min(quality1, quality2);
 end
 
 local function paladin_OnTalentUpdate()
-	-- No need to do it before
+	-- Divine Guardian is a level-80 talent; default to no bonus so playerScaling[1]
+	-- is ALWAYS populated. Sacred Shield is usable before 80, and without this the
+	-- early return below left the player's scaling table empty -> a nil-arithmetic
+	-- crash in paladin_SacredShield_Create.
+	playerScaling[1] = 1.0;
+
+	-- No need to inspect talents before then.
 	if(UnitLevel("player") < 80) then return; end
 
 	-- Divine Guardian

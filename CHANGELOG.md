@@ -4,6 +4,16 @@ All notable changes to this **stock 3.3.5a backport** of Compact Raid Frames.
 
 ## [1.14] — 2026-07-05
 
+### Fixed
+- **Lua error casting Sacred Shield on a sub-80 Paladin** (`AbsorbsMonitor-1.0.lua:1597:
+  attempt to perform arithmetic on field '?' (a nil value)`). Divine Guardian is a
+  level-80 talent, so `paladin_OnTalentUpdate` early-returned below 80 and never
+  populated the player's scaling table; Sacred Shield (usable from level 74) then
+  read `sourceScaling[1]` as nil and crashed. The talent handler now always seeds
+  `playerScaling[1] = 1.0` before the level check, and `paladin_SacredShield_Create`
+  guards against a missing *or* empty scaling table (also covering an empty table
+  received over comm).
+
 ### Changed
 - **Options panel restored to Blizzard's original two-column Cata layout.** Earlier
   releases reflowed the Raid Profiles panel into a single scrollable column out of
