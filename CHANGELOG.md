@@ -2,6 +2,27 @@
 
 All notable changes to this **stock 3.3.5a backport** of Compact Raid Frames.
 
+## [1.15] — 2026-07-09
+
+### Added
+- **Important buffs are now prioritized in the frame buff slots.** Previously the
+  buff slots were filled in raw aura order, so long raid buffs (Mark of the Wild,
+  Thorns, Fortitude...) always claimed the limited slots and short important buffs
+  (Power Word: Shield, HoTs) — and their durations — were never visible in arena.
+  Two changes, mirroring retail behavior:
+  - `WotLKCompat.lua` replaces the permissive `SpellGetVisibilityInfo` /
+    `SpellIsPriorityAura` stubs with a curated WotLK spell table (matched by
+    localized spell name, so all ranks and locales are covered): long raid buffs
+    are hidden **while in combat** (own casts still show out of combat as before);
+    major externals/defensives (Pain Suppression, Guardian Spirit, Hands, Earth
+    Shield, Power Word: Shield, Innervate, Bloodlust/Heroism, Ice Block...) now
+    show **regardless of who cast them**; own HoTs/shields (Renew, Prayer of
+    Mending, Rejuvenation, Regrowth, Lifebloom, Wild Growth, Riptide, Earthliving,
+    Beacon of Light, Sacred Shield, Divine Aegis) are flagged as priority auras.
+  - `CompactUnitFrame_UpdateBuffs` gained a priority pass (same pattern as the
+    existing priority-debuff pass): priority buffs are seated first, remaining
+    slots then take other displayable buffs.
+
 ## [1.14] — 2026-07-05
 
 ### Fixed

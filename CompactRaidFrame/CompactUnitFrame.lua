@@ -1046,10 +1046,27 @@ function CompactUnitFrame_UpdateBuffs(frame)
     local index = 1;
     local frameNum = 1;
     local filter = nil;
+    --First seat priority buffs (shields, HoTs, externals) so long-duration
+    --raid buffs can never crowd them out of the limited slots.
     while ( frameNum <= frame.maxBuffs ) do
         local buffName = UnitBuff(frame.displayedUnit, index, filter);
         if ( buffName ) then
-            if ( CompactUnitFrame_UtilShouldDisplayBuff(frame.displayedUnit, index, filter) and not CompactUnitFrame_UtilIsBossAura(frame.displayedUnit, index, filter, true) ) then
+            if ( CompactUnitFrame_UtilIsPriorityBuff(frame.displayedUnit, index, filter) and CompactUnitFrame_UtilShouldDisplayBuff(frame.displayedUnit, index, filter) and not CompactUnitFrame_UtilIsBossAura(frame.displayedUnit, index, filter, true) ) then
+                local buffFrame = frame.buffFrames[frameNum];
+                CompactUnitFrame_UtilSetBuff(buffFrame, frame.displayedUnit, index, filter);
+                frameNum = frameNum + 1;
+            end
+        else
+            break;
+        end
+        index = index + 1;
+    end
+    --Then fill any remaining slots with the other displayable buffs.
+    index = 1;
+    while ( frameNum <= frame.maxBuffs ) do
+        local buffName = UnitBuff(frame.displayedUnit, index, filter);
+        if ( buffName ) then
+            if ( not CompactUnitFrame_UtilIsPriorityBuff(frame.displayedUnit, index, filter) and CompactUnitFrame_UtilShouldDisplayBuff(frame.displayedUnit, index, filter) and not CompactUnitFrame_UtilIsBossAura(frame.displayedUnit, index, filter, true) ) then
                 local buffFrame = frame.buffFrames[frameNum];
                 CompactUnitFrame_UtilSetBuff(buffFrame, frame.displayedUnit, index, filter);
                 frameNum = frameNum + 1;
@@ -1206,6 +1223,11 @@ function CompactUnitFrame_UtilShouldDisplayBuff(unit, index, filter)
         local selfBuff, canApplyAura = SpellIsSelfBuff(spellId)
         return (unitCaster == "player" or unitCaster == "pet" or unitCaster == "vehicle") and canApplyAura and not selfBuff;
     end
+end
+
+function CompactUnitFrame_UtilIsPriorityBuff(unit, index, filter)
+    local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, canStealOrPurge, _, spellId = UnitBuff(unit, index, filter);
+    return SpellIsPriorityAura(spellId);
 end
 
 function CompactUnitFrame_HideAllBuffs(frame)

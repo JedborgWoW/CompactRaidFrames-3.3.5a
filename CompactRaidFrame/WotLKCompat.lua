@@ -276,23 +276,138 @@ if type(UnitHasIncomingResurrection) ~= "function" then
 end
 
 --========================================================================--
--- 9. Aura visibility filters (ClassicAPI shipped a curated spell table; we use
---    permissive defaults: show buffs you applied, no "custom" visibility, no
---    priority auras). Debuff display itself uses the native UnitDebuff path.
+-- 9. Aura visibility filters (ClassicAPI shipped a curated spell table; this
+--    is a WotLK-tuned equivalent). Spells are matched by localized name via
+--    GetSpellInfo on one representative rank id, so every rank of a spell is
+--    covered on any game locale. Three categories:
+--      * longRaidBuffs — long-duration raid buffs (Fort, MotW, Blessings...):
+--        own casts shown out of combat as before, hidden entirely in combat
+--        so they cannot crowd out shields/HoTs (retail RAID_INCOMBAT rule).
+--      * showAllBuffs  — important short buffs shown no matter who cast them
+--        (externals/defensives: Pain Suppression, Hand of Protection, PW:S...).
+--      * priorityBuffs — buffs CompactUnitFrame_UpdateBuffs seats FIRST
+--        (all showAllBuffs plus your own HoTs/shields).
+--    Debuff display itself uses the native UnitDebuff path.
 --========================================================================--
-if type(SpellGetVisibilityInfo) ~= "function" then
-    function SpellGetVisibilityInfo(spellId, visType)
-        return false  -- hasCustom = false -> falls through to SpellIsSelfBuff path
+do
+    local GetSpellInfo = GetSpellInfo
+    local function BuildNameSet(ids)
+        local set = {}
+        for i = 1, #ids do
+            local name = GetSpellInfo(ids[i])
+            if name then set[name] = true end
+        end
+        return set
     end
-end
-if type(SpellIsSelfBuff) ~= "function" then
-    function SpellIsSelfBuff(spellId)
-        -- returns: selfBuff, canApplyAura  -> show non-self buffs cast by the player
-        return false, true
+
+    -- Long raid buffs: hidden in combat, own casts shown out of combat.
+    local longRaidBuffs = BuildNameSet({
+        1126,  -- Mark of the Wild
+        21849, -- Gift of the Wild
+        467,   -- Thorns
+        1243,  -- Power Word: Fortitude
+        21562, -- Prayer of Fortitude
+        14752, -- Divine Spirit
+        27681, -- Prayer of Spirit
+        976,   -- Shadow Protection
+        27683, -- Prayer of Shadow Protection
+        1459,  -- Arcane Intellect
+        23028, -- Arcane Brilliance
+        61024, -- Dalaran Intellect
+        61316, -- Dalaran Brilliance
+        604,   -- Dampen Magic
+        1008,  -- Amplify Magic
+        19740, -- Blessing of Might
+        25782, -- Greater Blessing of Might
+        19742, -- Blessing of Wisdom
+        25894, -- Greater Blessing of Wisdom
+        20217, -- Blessing of Kings
+        25898, -- Greater Blessing of Kings
+        20911, -- Blessing of Sanctuary
+        25899, -- Greater Blessing of Sanctuary
+        6673,  -- Battle Shout
+        469,   -- Commanding Shout
+        57330, -- Horn of Winter
+        50720, -- Vigilance
+        54424, -- Fel Intelligence
+    })
+
+    -- Important short buffs shown regardless of caster (externals/defensives).
+    local showAllBuffs = BuildNameSet({
+        17,    -- Power Word: Shield
+        33206, -- Pain Suppression
+        47788, -- Guardian Spirit
+        10060, -- Power Infusion
+        1022,  -- Hand of Protection
+        6940,  -- Hand of Sacrifice
+        1044,  -- Hand of Freedom
+        64205, -- Divine Sacrifice
+        642,   -- Divine Shield
+        974,   -- Earth Shield
+        29166, -- Innervate
+        2825,  -- Bloodlust
+        32182, -- Heroism
+        53480, -- Roar of Sacrifice (hunter pet, on an ally)
+        45438, -- Ice Block
+        48792, -- Icebound Fortitude
+        48707, -- Anti-Magic Shell
+        871,   -- Shield Wall
+        12975, -- Last Stand
+        22812, -- Barkskin
+        61336, -- Survival Instincts
+        5277,  -- Evasion
+        31224, -- Cloak of Shadows
+        19263, -- Deterrence
+    })
+
+    -- Own HoTs/shields that should win a buff slot over anything else.
+    local priorityBuffs = BuildNameSet({
+        139,   -- Renew
+        33076, -- Prayer of Mending
+        47753, -- Divine Aegis
+        774,   -- Rejuvenation
+        8936,  -- Regrowth
+        33763, -- Lifebloom
+        48438, -- Wild Growth
+        61295, -- Riptide
+        51945, -- Earthliving
+        53563, -- Beacon of Light
+        53601, -- Sacred Shield
+    })
+    for name in pairs(showAllBuffs) do
+        priorityBuffs[name] = true
     end
-end
-if type(SpellIsPriorityAura) ~= "function" then
-    function SpellIsPriorityAura(spellId) return false end
+
+    if type(SpellGetVisibilityInfo) ~= "function" then
+        -- returns: hasCustom, alwaysShowMine, showForMySpec
+        function SpellGetVisibilityInfo(spellId, visType)
+            local name = spellId and GetSpellInfo(spellId)
+            if name then
+                if showAllBuffs[name] then
+                    return true, false, true   -- show regardless of caster
+                end
+                if longRaidBuffs[name] then
+                    if visType == "RAID_INCOMBAT" then
+                        return true, false, false  -- hidden while in combat
+                    end
+                    return true, true, false       -- out of combat: own casts only
+                end
+            end
+            return false  -- hasCustom = false -> falls through to SpellIsSelfBuff path
+        end
+    end
+    if type(SpellIsSelfBuff) ~= "function" then
+        function SpellIsSelfBuff(spellId)
+            -- returns: selfBuff, canApplyAura  -> show non-self buffs cast by the player
+            return false, true
+        end
+    end
+    if type(SpellIsPriorityAura) ~= "function" then
+        function SpellIsPriorityAura(spellId)
+            local name = spellId and GetSpellInfo(spellId)
+            return (name and priorityBuffs[name]) or false
+        end
+    end
 end
 
 --========================================================================--

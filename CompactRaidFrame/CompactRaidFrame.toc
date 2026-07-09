@@ -2,7 +2,7 @@
 ## Title: Compact Raid Frames
 ## Author: Blizzard, Tsoukie (backport: Jedborg)
 ## Notes: Classic Raid Frames - stock 3.3.5a (no ClassicAPI dependency)
-## Version: 1.14
+## Version: 1.15
 ## SavedVariables: CompactRaidFrameAccountDB
 ## SavedVariablesPerCharacter: CompactRaidFrameDB
 
